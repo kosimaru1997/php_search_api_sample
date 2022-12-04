@@ -15,7 +15,12 @@
   $CX = $_ENV['SEARCH_CX'];
 
   // formの受け取り(クエリパラメータの取得)
-  $input_word = (isset($_GET['word'])) ?$_GET['word'] : null;
+  // 入力内容が、「半角スペース」、「全角スペース」、「+」だけの場合$wordをnullをする
+  $input_word =
+  (isset($_GET['word']) && !preg_match('/^[\s|\+]+$/u' ,$_GET['word']))
+    ? $_GET['word']
+    : null;
+
   $start = (isset($_GET['start'])) ? $_GET['start'] : 0;
 
   $items = null;
