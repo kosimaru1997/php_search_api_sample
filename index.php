@@ -31,10 +31,21 @@
     $word = str_replace('　', '+', $word);
 
     $request_url = "{$URL}?key={$API_KEY}&cx={$CX}&q={$word}&start={$start}";
-    $result_json = file_get_contents($request_url, true);
-    $result = json_decode($result_json, true);
-    $items = $result['items'];
-    $next = $result['queries']['nextPage'];
+
+    try {
+      // エラー時の処理を登録
+      set_error_handler(function(){
+        throw new Exception();
+      });
+
+      $result_json = file_get_contents($request_url, true);
+      $result = json_decode($result_json, true);
+      $items = $result['items'];
+    } catch(Exception $e) {
+      echo "カスタム検索APIの呼び出し時に予期せぬエラーが発生しました";
+    } finally {
+      restore_error_handler();
+    };
   }
 ?>
 
