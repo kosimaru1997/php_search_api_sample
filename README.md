@@ -23,6 +23,13 @@ php -S 0.0.0.0:8080
 
 http://localhost:8080 にアクセスし画面が表示されれば成功です。
 
+## デバッグ
+
+- Xdebugをインストール
+https://xdebug.org/docs/install
+- 8080ポートでサーバーを起動(php -S 0.0.0.0:8080実行)
+- VsCode上で 左側のタブから `Run and Debug(実行とデバッグ)`をクリックし、`Listen for Xdebug`を実行
+
 ## 参考情報
 
 Custom Search API 
