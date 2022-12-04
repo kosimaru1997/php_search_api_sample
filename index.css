@@ -26,8 +26,28 @@ form {
   padding: 10px 10px;
 }
 
+.contents {
+  margin-top: 30px;
+}
+
 .wp-block-quote {
   padding: 10px;
   border: solid 2px;
   border-radius: 2px;
+}
+
+.page-nate {
+  padding: 10px 0;
+}
+
+ul.page-nate-list {
+  text-align: center;
+}
+
+.page-nate-list li {
+  display: inline;
+  text-align: center;
+  padding:10px 15px;
+  border:1px #ccc solid;color:#000053;
+  border-radius: 5px / 5px;
 }

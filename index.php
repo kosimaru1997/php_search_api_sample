@@ -21,7 +21,7 @@
     ? $_GET['word']
     : null;
 
-  $start = (isset($_GET['start'])) ? $_GET['start'] : 0;
+  $start = (isset($_GET['start'])) ? $_GET['start'] : 1;
 
   $items = null;
 
@@ -41,6 +41,24 @@
       $result_json = file_get_contents($request_url, true);
       $result = json_decode($result_json, true);
       $items = $result['items'];
+      // 前ページのインデックスを取得
+      $previousPage =
+        array_key_exists('previousPage', $result['queries'])
+          ? array_shift($result['queries']['previousPage'])
+          : null;
+      $previousIndex =
+        $previousPage != null && array_key_exists('startIndex', $previousPage)
+          ? $previousPage['startIndex']
+          : null;
+      // 次ページのインデックスを取得
+      $nextPage =
+        array_key_exists('nextPage', $result['queries'])
+          ? array_shift($result['queries']['nextPage'])
+          : null;
+      $nextIndex =
+        $nextPage != null && array_key_exists('startIndex', $nextPage)
+        ? $nextPage['startIndex']
+        : null;
     } catch(Exception $e) {
       echo "カスタム検索APIの呼び出し時に予期せぬエラーが発生しました";
     } finally {
@@ -56,11 +74,10 @@
     </form>
   </div>
 
-  <div class="contents">
-
   <?php if ($items == null) : ?>
     <p>検索ワードを入力してください</p>
   <?php else : ?>
+  <div class="contents">
     <?php foreach ($items as $key => $item) : ?>
     <blockquote class="wp-block-quote">
       <a href="<?php echo $item['link']; ?>">
@@ -71,9 +88,19 @@
       </p>
     </blockquote>
     <?php endforeach; ?>
-  <?php endif; ?>
-
   </div>
+
+  <div class="page-nate">
+    <ul class="page-nate-list">
+      <?php if ($previousIndex != null) : ?>
+        <a href=<?php echo "/?word={$word}&start={$previousIndex}" ?>><li>前へ</li></a>
+      <?php endif; ?>
+      <?php if ($nextIndex != null) : ?>
+      <a href=<?php echo "/?word={$word}&start={$nextIndex}" ?>><li>次へ</li></a>
+      <?php endif; ?>
+    </ul>
+  </div>
+  <?php endif; ?>
 
 </body>
 </html>
